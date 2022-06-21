@@ -1,0 +1,4 @@
+[submodule "common"]
+	path = common
+	url = https://github.com/FRC4607/common.git
+	branch = swerve

@@ -24,4 +24,5 @@ pluginManagement {
             url frcHomeMaven
         }
     }
+    include ':common'
 }
