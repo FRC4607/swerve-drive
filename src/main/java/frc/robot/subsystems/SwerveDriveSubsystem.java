@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.frc4607.common.swerve.*;
 
+/**
+ * Manages the drivetrain of the robot.
+ */
 public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
