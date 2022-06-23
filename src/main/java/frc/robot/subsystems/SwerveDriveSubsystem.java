@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
- * Manages the drivetrain of the robot.
+ * Manages the drivetrain of the robot by talking to the thread containing the swerve drive handler.
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
 
