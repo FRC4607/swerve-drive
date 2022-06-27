@@ -1,15 +1,11 @@
 package frc.robot.drivers;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxPIDController.AccelStrategy;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
-
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import org.frc4607.common.swerve.SwerveDriverConfig;
 import org.frc4607.common.swerve.SwerveMotorBase;
 
@@ -49,18 +45,32 @@ public class NeoDriver extends SwerveMotorBase {
     }
 
     public double getEncoderPosition() {
-        return m_neoEncoder.getPosition();
+        if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
+            return m_quadEncoder.getDistance() + m_offset;
+        } else {
+            return m_neoEncoder.getPosition();
+        }
     }
     
     public double getEncoderVelocity() {
-        return m_neoEncoder.getVelocity();
+        if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
+            return m_quadEncoder.getRate();
+        } else {
+            return m_neoEncoder.getVelocity();
+        }
     }
 
     public void setEncoder(double target) {
         m_neoEncoder.setPosition(target);
     }
 
-    public void setTarget(double target) {
-
+    public void setTarget(double target, double ffVolts) {
+        if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
+            m_pidController.setReference(target,
+                ControlType.kPosition, 0, ffVolts, ArbFFUnits.kVoltage);
+        }
+        else {
+            m_pidController.setReference(target, ControlType.kVelocity, 0, ffVolts, ArbFFUnits.kVoltage);
+        }
     }
 }
