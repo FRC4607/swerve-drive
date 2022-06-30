@@ -40,10 +40,18 @@ public class NeoDriver extends SwerveMotorBase {
         m_pidController.setIZone(m_config.m_kiZone, 0);
     }
 
+    @Override
     public boolean isConnected() {
         return m_motor.getFaults() == 0 && m_motor.getStickyFaults() == 0;
     }
 
+    /** 
+     * Gets the position of the motor.
+     *
+     * @return The distance in meters if this is a drive motor or the rotation in CCW
+     postive degrees if this is a turning motor.
+     */
+    @Override
     public double getEncoderPosition() {
         if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
             return m_quadEncoder.getDistance() + m_offset;
@@ -52,6 +60,13 @@ public class NeoDriver extends SwerveMotorBase {
         }
     }
     
+    /** 
+     * Gets the velocity of the motor.
+     *
+     * @return The velocity in meters per second if this is a drive motor or the velocity in CCW
+     postive degrees per second if this is a turning motor.
+     */
+    @Override
     public double getEncoderVelocity() {
         if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
             return m_quadEncoder.getRate();
@@ -60,17 +75,25 @@ public class NeoDriver extends SwerveMotorBase {
         }
     }
 
+    @Override
     public void setEncoder(double target) {
         m_neoEncoder.setPosition(target);
     }
 
+    /**
+     * Sets the target of the motor to a setpoint.
+     *
+     * @param target The target to set the motor to. Will be in meters per second for the drive
+     motor and degrees or the turning motor.
+     */
+    @Override
     public void setTarget(double target, double ffVolts) {
         if (m_config.m_motorType == SwerveDriverConfig.MotorType.TURNING) {
             m_pidController.setReference(target,
                 ControlType.kPosition, 0, ffVolts, ArbFFUnits.kVoltage);
-        }
-        else {
-            m_pidController.setReference(target, ControlType.kVelocity, 0, ffVolts, ArbFFUnits.kVoltage);
+        } else {
+            m_pidController.setReference(target,
+                ControlType.kVelocity, 0, ffVolts, ArbFFUnits.kVoltage);
         }
     }
 }
