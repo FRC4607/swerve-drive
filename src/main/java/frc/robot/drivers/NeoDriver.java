@@ -26,6 +26,8 @@ public class NeoDriver extends SwerveMotorBase {
         super(config);
 
         m_motor = new CANSparkMax(m_config.m_id, MotorType.kBrushless);
+        m_motor.clearFaults();
+        
         m_motor.setInverted(m_config.m_invertMotor);
 
         m_neoEncoder = m_motor.getEncoder();

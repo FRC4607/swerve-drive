@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.frc4607.common.swerve.SwerveDriverConfig;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -16,4 +18,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static void getFrontLeftConfig() {
+        SwerveDriverConfig c = new SwerveDriverConfig();
+    }
 }

@@ -4,16 +4,38 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.threads.SwerveDriveThread;
+import org.frc4607.common.swerve.SwerveDrive;
 
 /**
  * Manages the drivetrain of the robot by talking to the thread containing the swerve drive handler.
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
 
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
+    private final SwerveDriveThread m_thread;
+    private final Notifier m_notifier;
+
+    /**
+     * Creates a new object and sets up the thread it uses.
+
+     * @param swerveDrive The {@link org.frc4607.common.swerve.SwerveDrive} to operate on.
+     */
+    public SwerveDriveSubsystem(SwerveDrive swerveDrive) {
+        m_thread = new SwerveDriveThread(swerveDrive);
+        m_notifier = new Notifier(m_thread);
+        m_notifier.startPeriodic(0.001);
+    }
+
+    /**
+     * Sets the target {@link edu.wpi.first.math.kinematics.ChassisSpeeds} of the robot.
+
+     * @param target The speeds for the drivetrain to target.
+     */
+    public void setSpeeds(ChassisSpeeds target) {
+        m_thread.setSpeeds(target);
     }
 
     @Override
